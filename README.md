@@ -11,8 +11,8 @@ The program reads the CVS file and for each row, it inserts the corresponding da
 **NMRS** database.
 
 <h3>HOW TO USE</h3>
-* Download or clone this repo
-* cd into the project folder
-* setup your virtual (venv) environment on your IDE
-* run <code>pip install -r requirements.txt</code>
-* Execute the program
+1. Download or clone this repo
+2. cd into the project folder
+3. setup your virtual (venv) environment on your IDE
+4. run <code>pip install -r requirements.txt</code>
+5. Execute the program
