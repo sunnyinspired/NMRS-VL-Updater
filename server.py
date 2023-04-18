@@ -17,6 +17,7 @@ query = con.cursor()
 
 client_facility = 53
 counter = 0
+ids = []
 # get current date
 cur_date = datetime.date.today()
 today = cur_date.strftime('%Y-%m-%d')
@@ -33,11 +34,10 @@ with open('data/data.csv') as file:
         vl_result = row[23]
         # print(f"VL result is: {vl_result}")
         # get the patient_id from the database for each patient using the patient identifier
-        query.execute(f"SELECT patient_id FROM patient_identifier WHERE identifier = '{pid}'")
-        results = query.fetchall()
-        # the result is a list of tuples, so we loop through the result
-        for r in results:
-            try:
+        query.execute(f"SELECT max(patient_id) FROM patient_identifier WHERE identifier = '{pid}' AND voided = 0")
+        r = query.fetchone()
+        try:
+            if r[0] is not None:
                 # for each of the retrieved ids, we insert the corresponding data into the relevant tables.
                 query.execute("SET FOREIGN_KEY_CHECKS = 0")
                 # insert into visit table
@@ -94,6 +94,7 @@ with open('data/data.csv') as file:
                 con.commit()
                 query.execute("SET FOREIGN_KEY_CHECKS = 1")
                 counter += 1
-            except mysql_con.Error as e:
-                print("Failed to Insert Data: ", e)
+        except mysql_con.Error as e:
+            print("Failed to Insert Data: ", e)
+
 print(f"Viral Load Results Successfully Updated for {counter} Patients")
